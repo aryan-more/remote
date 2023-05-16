@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:remote/error_handler/error.dart';
 
 mixin RemoteTaskDialog {
-  Future<T> loading<T>(FutureOr<T?> Function() task) async {
+  Future<T> loading<T>(FutureOr<T> Function() task) async {
     throw AppException('Please implement RemoteTaskDialog mixin');
   }
 
