@@ -5,7 +5,7 @@ import 'package:remote/error_handler/error.dart';
 
 mixin RemoteTaskDialog {
   Future<T> loading<T>(FutureOr<T?> Function() task) async {
-    throw AppException('Please implemente RemoteTaskDialog mixin');
+    throw AppException('Please implement RemoteTaskDialog mixin');
   }
 
   void showError({
@@ -13,5 +13,7 @@ mixin RemoteTaskDialog {
     required String? confirmText,
     required VoidCallback callback,
     bool dismissible = true,
-  }) {}
+  }) {
+    throw AppException('Please implement RemoteTaskDialog mixin');
+  }
 }
