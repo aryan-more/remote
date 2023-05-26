@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:remote/error_handler/error.dart';
 import 'package:remote/error_handler/http.dart';
 import 'package:remote/remote/dialog.dart';
+import 'package:remote/remote/logout.dart';
 import 'package:remote/remote/token.dart';
 
 abstract class LocalTask extends GetxController {
@@ -13,7 +14,7 @@ abstract class LocalTask extends GetxController {
   void runTask();
 }
 
-abstract class RemoteTask extends LocalTask with ExpiredTokenMixIn, RemoteTaskDialog {
+abstract class RemoteTask extends LocalTask with ExpiredTokenMixIn, RemoteTaskDialog, LogOutMixin {
   Future<void> task();
   Future<bool> validate() async {
     return true;
@@ -32,11 +33,19 @@ abstract class RemoteTask extends LocalTask with ExpiredTokenMixIn, RemoteTaskDi
       log(s.toString());
     } on ExpiredToken catch (_) {
       if (retry) {
-        error = await loading(
-          () => renewToken(),
-        );
-        if (error == null) {
-          return runTask(retry: false);
+        try {
+          error = await loading(
+            () => renewToken(),
+          );
+          if (error == null) {
+            return runTask(retry: false);
+          }
+        } on LogOutUser catch (_) {
+          Get.back();
+          await logOut();
+          return false;
+        } catch (_) {
+          error = "Something went wrong";
         }
       }
       error = 'Failed to authenticate user';

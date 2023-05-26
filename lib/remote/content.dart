@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:remote/error_handler/error.dart';
 import 'package:remote/error_handler/http.dart';
-import 'package:remote/remote/token.dart';
+import 'package:remote/remote/remote.dart';
 
-abstract class RemoteContent extends GetxController with ExpiredTokenMixIn {
+abstract class RemoteContent extends GetxController with ExpiredTokenMixIn, LogOutMixin {
   bool loading = false;
   String? error;
   final bool defaultLoad;
@@ -27,11 +27,19 @@ abstract class RemoteContent extends GetxController with ExpiredTokenMixIn {
     } on AppException catch (e) {
       error = e.msg;
     } on ExpiredToken catch (_) {
-      if (retry) {
+      if (!retry) {
+        await logOut();
+        return;
+      }
+      try {
         error = await renewToken();
         if (error == null && retry) {
           return loadData(retry: false);
         }
+      } on LogOutUser catch (_) {
+        await logOut();
+      } catch (_) {
+        error = "Something went wrong";
       }
     } catch (_, s) {
       log(_.runtimeType.toString());

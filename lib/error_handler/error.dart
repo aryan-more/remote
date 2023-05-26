@@ -1,5 +1,7 @@
 class ExpiredToken {}
 
+class LogOutUser {}
+
 class AppExceptionNonRetryable {
   static const Set<String> _reasons = {'Record not found.', "Order not found.", "Meeting not found."};
   static bool doesNotContains(String error) => !_reasons.contains(error);
