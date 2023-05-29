@@ -13,8 +13,8 @@ dependencies:
   intl: any
   get: any
   http: any
-  flutter_spinkit: latest
-  flutter_typeahead: latest
+  flutter_spinkit: any
+  flutter_typeahead: any
 
 dev_dependencies:
   flutter_test:
