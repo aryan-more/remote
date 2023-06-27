@@ -59,11 +59,13 @@ abstract class RemoteContent extends GetxController with ExpiredTokenMixIn, LogO
       if (updateController) {
         Future.delayed(const Duration(milliseconds: 100)).then((value) => update());
       }
-      afterLoad();
+      afterLoadStart();
     }
   }
 
-  void afterLoad() {}
+  void afterLoadStart() {}
+
+  void afterLoadEnd() {}
 
   void endLoading() {
     loading = false;
@@ -71,7 +73,7 @@ abstract class RemoteContent extends GetxController with ExpiredTokenMixIn, LogO
       update();
     }
     if (error == null) {
-      afterLoad();
+      afterLoadEnd();
     }
   }
 }
