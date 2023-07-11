@@ -48,12 +48,13 @@ abstract class RemoteContentSearch<T extends Searchable> extends RemoteContentLa
     }
   }
 
-  void onSelect(T selected) {
+  void onSelect(T? selected) {
     if (this.selected == selected) {
       return;
     }
+
     this.selected = selected;
-    textEditingController.text = selected.toSearchLabel();
+    textEditingController.text = selected?.toSearchLabel() ?? "";
     onSelected();
   }
 
