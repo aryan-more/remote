@@ -44,6 +44,22 @@ extension DateTimeExt on DateTime {
   }
 }
 
+String addZeroIfNeeded(int number) {
+  if (number < 10) {
+    return "0$number";
+  }
+
+  return number.toString();
+}
+
+extension TimeOfDayExt on TimeOfDay {
+  String get format12hr {
+    final bool isPM = hour >= 12;
+
+    return "${addZeroIfNeeded(hour % 12)}:${addZeroIfNeeded(minute)} ${isPM ? 'PM' : 'AM'}";
+  }
+}
+
 class EdgeInsetsEXT {
   static EdgeInsets allExceptTop(double padding) => EdgeInsets.only(
         bottom: padding,
