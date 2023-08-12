@@ -5,6 +5,10 @@ abstract class Searchable {
   String toSearchLabel();
 }
 
+abstract interface class SearchableSelect {
+  String get onSelected;
+}
+
 abstract class RemoteContentSearch<T extends Searchable> extends RemoteContentLazy<T> {
   RemoteContentSearch({this.selected, super.defaultLoad = false, super.updateController = false});
   late final TextEditingController textEditingController;
@@ -25,7 +29,7 @@ abstract class RemoteContentSearch<T extends Searchable> extends RemoteContentLa
 
   @override
   void onInit() {
-    textEditingController = TextEditingController(text: selected?.toSearchLabel());
+    textEditingController = TextEditingController(text: selected is SearchableSelect ? (selected as SearchableSelect?)?.onSelected : selected?.toSearchLabel());
     textEditingController.addListener(() {
       if (selected != null && textEditingController.text == "") {
         selected = null;
@@ -54,7 +58,11 @@ abstract class RemoteContentSearch<T extends Searchable> extends RemoteContentLa
     }
 
     this.selected = selected;
-    textEditingController.text = selected?.toSearchLabel() ?? "";
+    if (selected is SearchableSelect) {
+      textEditingController.text = (selected as SearchableSelect?)?.onSelected ?? "";
+    } else {
+      textEditingController.text = selected?.toSearchLabel() ?? "";
+    }
     onSelected();
   }
 
