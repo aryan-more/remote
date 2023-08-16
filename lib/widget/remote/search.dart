@@ -4,7 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:remote/remote/content_search.dart';
 
-class RemoteSearchWidget<T extends RemoteContentSearch> extends StatelessWidget {
+class RemoteSearchWidget<T extends RemoteContentBaseSearch> extends StatelessWidget {
   const RemoteSearchWidget({
     Key? key,
     this.tag,
