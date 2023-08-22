@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:remote/error_handler/error.dart';
+import 'package:remote/remote.dart';
 
 Future<T?> httpErrorHandler<T>(Future<T?> task) async {
   try {
@@ -11,6 +11,7 @@ Future<T?> httpErrorHandler<T>(Future<T?> task) async {
   } on ExpiredToken catch (_) {
     rethrow;
   } catch (_, s) {
+    Remote.logError(_, s);
     log(s.toString());
     log(_.toString());
     throw AppException("Something went wrong");
