@@ -13,6 +13,6 @@ Future<T?> httpErrorHandler<T>(Future<T?> task) async {
   } catch (_, s) {
     log(s.toString());
     log(_.toString());
-    throw AppException("Network Error");
+    throw AppException("Something went wrong");
   }
 }
