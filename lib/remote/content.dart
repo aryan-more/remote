@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:remote/error_handler/error.dart';
 import 'package:remote/error_handler/http.dart';
 import 'package:remote/remote/remote.dart';
+import 'package:remote/static/remote.dart';
 
 abstract class RemoteContent extends GetxController with ExpiredTokenMixIn, LogOutMixin {
   bool loading = false;
@@ -41,8 +42,9 @@ abstract class RemoteContent extends GetxController with ExpiredTokenMixIn, LogO
       } catch (_) {
         error = "Something went wrong";
       }
-    } catch (_, s) {
-      log(_.runtimeType.toString());
+    } catch (e, s) {
+      Remote.logError(e, s);
+      log(e.runtimeType.toString());
       log(s.toString());
       error = "Something went wrong";
     }

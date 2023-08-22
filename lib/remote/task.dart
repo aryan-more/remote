@@ -7,6 +7,7 @@ import 'package:remote/error_handler/http.dart';
 import 'package:remote/remote/dialog.dart';
 import 'package:remote/remote/logout.dart';
 import 'package:remote/remote/token.dart';
+import 'package:remote/static/remote.dart';
 
 abstract class LocalTask extends GetxController {
   void onDone() {}
@@ -50,6 +51,7 @@ abstract class RemoteTask extends LocalTask with ExpiredTokenMixIn, RemoteTaskDi
       }
       error = 'Failed to authenticate user';
     } catch (e, s) {
+      Remote.logError(e, s);
       log(e.toString());
       log(s.toString());
 
