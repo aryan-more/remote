@@ -16,14 +16,14 @@ class Remote {
 
   static late final Future<T> Function<T>(Task task) showLoading;
 
-  static late final void Function({String message, String? confirmText, VoidCallback callback, bool dismissible}) showError;
+  static late final void Function({required String message, required String? confirmText, required VoidCallback callback, bool dismissible}) showError;
 
   static late final Future<String?> Function() renewToken;
 
   static void init({
     required Future<void> Function() logOutFunc,
     required Future<T> Function<T>(Task task) showLoadingFunc,
-    required void Function({String message, String? confirmText, VoidCallback callback, bool dismissible}) showErrorFunc,
+    required void Function({required String message, required String? confirmText, required VoidCallback callback, bool dismissible}) showErrorFunc,
     required Future<String?> Function() renewTokenFunc,
   }) {
     logOut = logOutFunc;
