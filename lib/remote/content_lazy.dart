@@ -6,6 +6,8 @@ abstract class RemoteContentLazy<T> extends RemoteContent {
     super.updateController,
   });
 
+  int get length => data.length + (hasMore ? 1 : 0);
+
   final limit = 10;
   final List<T> data = [];
   bool init = true;
