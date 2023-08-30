@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remote/error_handler/error.dart';
 import 'package:remote/error_handler/http.dart';
-import 'package:remote/remote/dialog.dart';
-import 'package:remote/remote/logout.dart';
-import 'package:remote/remote/token.dart';
 import 'package:remote/static/remote.dart';
 
 abstract class LocalTask extends GetxController {
@@ -15,7 +12,7 @@ abstract class LocalTask extends GetxController {
   void runTask();
 }
 
-abstract class RemoteTask extends LocalTask with ExpiredTokenMixIn, RemoteTaskDialog, LogOutMixin {
+abstract class RemoteTask extends LocalTask {
   Future<void> task();
   Future<bool> validate() async {
     return true;
@@ -28,22 +25,22 @@ abstract class RemoteTask extends LocalTask with ExpiredTokenMixIn, RemoteTaskDi
       if (!(await validate())) {
         return false;
       }
-      await loading(() => httpErrorHandler(task()));
+      await Remote.showLoading(() => httpErrorHandler(task()));
     } on AppException catch (e, s) {
       error = e.msg;
       log(s.toString());
     } on ExpiredToken catch (_) {
       if (retry) {
         try {
-          error = await loading(
-            () => renewToken(),
+          error = await Remote.showLoading(
+            () => Remote.renewToken(),
           );
           if (error == null) {
             return runTask(retry: false);
           }
         } on LogOutUser catch (_) {
           Get.back();
-          await logOut();
+          await Remote.logOut();
           return false;
         } catch (_) {
           error = "Something went wrong";
@@ -59,7 +56,7 @@ abstract class RemoteTask extends LocalTask with ExpiredTokenMixIn, RemoteTaskDi
     }
 
     if (error != null) {
-      showError(message: error, confirmText: "Retry", callback: runTask);
+      Remote.showError(message: error, confirmText: "Retry", callback: runTask);
       return false;
     } else {
       onDone();

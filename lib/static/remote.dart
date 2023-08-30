@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:remote/static/type.dart';
+
 class Remote {
   static RemoteErrorLogger? _logger;
 
@@ -7,6 +10,26 @@ class Remote {
     if (_logger != null) {
       _logger!(e, s);
     }
+  }
+
+  static late final Future<void> Function() logOut;
+
+  static late final Future<T> Function<T>(Task task) showLoading;
+
+  static late final void Function({String message, String? confirmText, VoidCallback callback, bool dismissible}) showError;
+
+  static late final Future<String?> Function() renewToken;
+
+  static void init({
+    required Future<void> Function() logOutFunc,
+    required Future<T> Function<T>(Task task) showLoadingFunc,
+    required void Function({String message, String? confirmText, VoidCallback callback, bool dismissible}) showErrorFunc,
+    required Future<String?> Function() renewTokenFunc,
+  }) {
+    logOut = logOutFunc;
+    showLoading = showLoadingFunc;
+    showError = showErrorFunc;
+    renewToken = renewTokenFunc;
   }
 }
 
