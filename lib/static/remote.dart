@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:remote/static/type.dart';
 
 class Remote {
@@ -12,19 +11,19 @@ class Remote {
     }
   }
 
-  static late final Future<void> Function() logOut;
+  static late final LogOut logOut;
 
-  static late final Future<T> Function<T>(Task task) showLoading;
+  static late final ShowLoading showLoading;
 
-  static late final void Function({required String message, required String? confirmText, required VoidCallback callback, bool dismissible}) showError;
+  static late final ShowError showError;
 
-  static late final Future<String?> Function() renewToken;
+  static late final RenewToken renewToken;
 
   static void init({
-    required Future<void> Function() logOutFunc,
-    required Future<T> Function<T>(Task task) showLoadingFunc,
-    required void Function({required String message, required String? confirmText, required VoidCallback callback, bool dismissible}) showErrorFunc,
-    required Future<String?> Function() renewTokenFunc,
+    required LogOut logOutFunc,
+    required ShowLoading showLoadingFunc,
+    required ShowError showErrorFunc,
+    required RenewToken renewTokenFunc,
   }) {
     logOut = logOutFunc;
     showLoading = showLoadingFunc;
