@@ -90,7 +90,7 @@ abstract class RemoteContentSearchRx<T extends Searchable> extends RemoteContent
 
   @override
   void onInit() {
-    textEditingController = TextEditingController(text: selected is SearchableSelect ? (selected as SearchableSelect?)?.onSelected : selected.value?.toSearchLabel());
+    textEditingController = TextEditingController(text: selected.value is SearchableSelect ? (selected.value as SearchableSelect?)?.onSelected : selected.value?.toSearchLabel());
     textEditingController.addListener(() {
       if (selected.value != null && textEditingController.text == "") {
         selected.value = null;
@@ -102,7 +102,7 @@ abstract class RemoteContentSearchRx<T extends Searchable> extends RemoteContent
 
   @override
   void onSelect(T? selected) {
-    if (this.selected == selected) {
+    if (this.selected.value == selected) {
       return;
     }
 
