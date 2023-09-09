@@ -54,6 +54,8 @@ abstract class RemoteContentLazy<T> extends RemoteContent {
     }
   }
 
+  T operator [](int index) => data[index];
+
   @override
   Future<void> loadData({bool retry = true}) async => lazyLoad();
 }
