@@ -14,6 +14,7 @@ mixin DateRange {
     );
     if (date != null && date != start.value) {
       start.value = date;
+      onDateUpdate();
     }
   }
 
@@ -26,6 +27,9 @@ mixin DateRange {
     );
     if (date != null && date != end.value) {
       end.value = date;
+      onDateUpdate();
     }
   }
+
+  void onDateUpdate() {}
 }
