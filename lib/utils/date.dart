@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:remote/remote.dart';
 
 mixin DateRange {
   final Rxn<DateTime> start = Rxn();
@@ -37,5 +38,17 @@ mixin DateRange {
     }
   }
 
-  void onDateUpdate() {}
+  void onDateUpdate() {
+    switch (runtimeType) {
+      case RemoteContentBaseSearch:
+        return;
+      case RemoteContentLazy:
+        (this as RemoteContentLazy).flush();
+        return;
+      case RemoteContent:
+        (this as RemoteContentLazy).loadData();
+        return;
+      default:
+    }
+  }
 }
