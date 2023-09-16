@@ -11,7 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   intl: any
-  get: any
+  get: 
+    git: https://github.com/jonataslaw/getx
   http: any
   flutter_spinkit: any
   flutter_typeahead: any
