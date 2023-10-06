@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remote/remote/content_lazy.dart';
 
-abstract interface class Searchable {
+abstract class Searchable {
   const Searchable();
   String toSearchLabel();
 }
 
-abstract interface class SearchableSelect {
+abstract class SearchableSelect {
   const SearchableSelect();
   String get onSelected;
 }
