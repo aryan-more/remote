@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:remote/error_handler/error.dart';
-import 'package:remote/error_handler/http.dart';
 import 'package:remote/static/remote.dart';
 
 abstract class RemoteContent extends GetxController {
@@ -23,7 +22,7 @@ abstract class RemoteContent extends GetxController {
   Future<void> loadData({bool retry = true}) async {
     startLoading(retry: retry);
     try {
-      await httpErrorHandler(load());
+      await load();
     } on AppException catch (e) {
       error = e.msg;
     } on ExpiredToken catch (_) {
@@ -42,10 +41,14 @@ abstract class RemoteContent extends GetxController {
         error = "Something went wrong";
       }
     } catch (e, s) {
-      Remote.logError(e, s);
-      log(e.runtimeType.toString());
-      log(s.toString());
-      error = "Something went wrong";
+      if (Remote.customErrorHandler.containsKey(e.runtimeType)) {
+        error = Remote.customErrorHandler[e.runtimeType]!(e);
+      } else {
+        Remote.logError(e, s);
+        log(e.runtimeType.toString());
+        log(s.toString());
+        error = "Something went wrong";
+      }
     }
     endLoading();
   }

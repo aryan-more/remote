@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remote/error_handler/error.dart';
-import 'package:remote/error_handler/http.dart';
 import 'package:remote/static/remote.dart';
 
 abstract class LocalTask extends GetxController {
@@ -25,7 +24,7 @@ abstract class RemoteTask extends LocalTask {
       if (!(await validate())) {
         return false;
       }
-      await Remote.showLoading(() => httpErrorHandler(task()));
+      await Remote.showLoading(() => task());
     } on AppException catch (e, s) {
       error = e.msg;
       log(s.toString());
@@ -48,11 +47,14 @@ abstract class RemoteTask extends LocalTask {
       }
       error = 'Failed to authenticate user';
     } catch (e, s) {
-      Remote.logError(e, s);
-      log(e.toString());
-      log(s.toString());
-
-      error = "Something went wrong";
+      if (Remote.customErrorHandler.containsKey(e.runtimeType)) {
+        error = Remote.customErrorHandler[e.runtimeType]!(e);
+      } else {
+        Remote.logError(e, s);
+        log(e.toString());
+        log(s.toString());
+        error = "Something went wrong";
+      }
     }
 
     if (error != null) {

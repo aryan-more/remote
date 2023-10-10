@@ -19,16 +19,20 @@ class Remote {
 
   static late final RenewToken renewToken;
 
+  static late final CustomErrorHandler customErrorHandler;
+
   static void init({
     required LogOut logOutFunc,
     required ShowLoading showLoadingFunc,
     required ShowError showErrorFunc,
     required RenewToken renewTokenFunc,
+    required CustomErrorHandler customErrorHandlerMap,
   }) {
     logOut = logOutFunc;
     showLoading = showLoadingFunc;
     showError = showErrorFunc;
     renewToken = renewTokenFunc;
+    customErrorHandler = customErrorHandlerMap;
   }
 }
 
