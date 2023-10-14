@@ -15,6 +15,7 @@ dependencies:
   http: any
   flutter_spinkit: any
   flutter_typeahead: any
+  mutex: ^3.1.0
 
 dev_dependencies:
   flutter_test:

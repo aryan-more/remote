@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mutex/mutex.dart';
 import 'package:remote/error_handler/error.dart';
 import 'package:remote/static/remote.dart';
 
@@ -12,6 +13,7 @@ abstract class LocalTask extends GetxController {
 }
 
 abstract class RemoteTask extends LocalTask {
+  final Mutex _mutex = Mutex();
   Future<void> task();
   Future<bool> validate() async {
     return true;
@@ -19,6 +21,10 @@ abstract class RemoteTask extends LocalTask {
 
   @override
   Future<bool> runTask({bool retry = true}) async {
+    if (_mutex.isLocked) {
+      return false;
+    }
+    await _mutex.acquire();
     String? error;
     try {
       if (!(await validate())) {
@@ -59,9 +65,11 @@ abstract class RemoteTask extends LocalTask {
 
     if (error != null) {
       Remote.showError(message: error, confirmText: "Retry", callback: runTask);
+      _mutex.release();
       return false;
     } else {
       onDone();
+      _mutex.release();
       return true;
     }
   }
