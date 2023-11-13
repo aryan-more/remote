@@ -15,6 +15,8 @@ extension DateTimeExt on DateTime {
 
   String get dateTime => DateFormat.yMMMd().add_jm().format(this);
 
+  DateTime get removeTime => DateTime(year, month, day);
+
   String get ago {
     final now = DateTime.now();
     final difference = now.difference(this);
