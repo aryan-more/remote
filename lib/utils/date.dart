@@ -39,16 +39,17 @@ mixin DateRange {
   }
 
   void onDateUpdate() {
-    switch (runtimeType) {
-      case RemoteContentBaseSearch:
-        return;
-      case RemoteContentLazy:
-        (this as RemoteContentLazy).flush();
-        return;
-      case RemoteContent:
-        (this as RemoteContentLazy).loadData();
-        return;
-      default:
+    if (this is RemoteContentBaseSearch) {
+      return;
+    }
+    if (this is RemoteContentLazy) {
+      (this as RemoteContentLazy).flush();
+      return;
+    }
+
+    if (this is RemoteContent) {
+      (this as RemoteContentLazy).loadData();
+      return;
     }
   }
 }
