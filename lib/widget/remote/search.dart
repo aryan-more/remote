@@ -4,7 +4,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:remote/remote/content_search.dart';
 
-class RemoteSearchWidget<T extends RemoteContentBaseSearch> extends StatelessWidget {
+class RemoteSearchWidget<T extends RemoteContentBaseSearch>
+    extends StatelessWidget {
   const RemoteSearchWidget({
     Key? key,
     this.tag,
@@ -18,26 +19,31 @@ class RemoteSearchWidget<T extends RemoteContentBaseSearch> extends StatelessWid
     return GetBuilder(
       tag: tag,
       builder: (T controller) {
-        return TypeAheadFormField(
-          validator: controller.validator,
-          onSuggestionSelected: controller.onSelect,
+        // TypeAheadField(itemBuilder: itemBuilder, onSelected: onSelected, suggestionsCallback: suggestionsCallback)
+        return TypeAheadField(
+          onSelected: controller.onSelect,
           itemBuilder: (context, itemData) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(itemData.toSearchLabel()),
             );
           },
-          autoFlipListDirection: true,
           autoFlipDirection: true,
-          suggestionsCallback: (pattern) => controller.flush().then((value) => controller.data),
-          textFieldConfiguration: TextFieldConfiguration(
-            controller: controller.textEditingController,
-            maxLines: 1,
-            decoration: decoration ??
-                InputDecoration(
-                  labelText: controller.hintText,
-                ),
-          ),
+          suggestionsCallback: (pattern) =>
+              controller.flush().then((value) => controller.data),
+          controller: controller.textEditingController,
+          builder: (context, tController, focusNode) {
+            return TextFormField(
+              focusNode: focusNode,
+              controller: tController,
+              maxLines: 1,
+              validator: controller.validator,
+              decoration: decoration ??
+                  InputDecoration(
+                    labelText: controller.hintText,
+                  ),
+            );
+          },
         );
       },
     );
