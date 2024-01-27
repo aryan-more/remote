@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-final doubleFormater = [
+final doubleFormatter = [
   FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
   TextInputFormatter.withFunction(
     (oldValue, newValue) {
