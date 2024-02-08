@@ -52,6 +52,10 @@ abstract class RemoteTask extends LocalTask {
           }
         }
         error = 'Failed to authenticate user';
+      } on LogOutUser catch (_) {
+        Get.back();
+        await Remote.logOut();
+        return false;
       } catch (e, s) {
         if (Remote.customErrorHandler.containsKey(e.runtimeType)) {
           error = Remote.customErrorHandler[e.runtimeType]!(e);
@@ -64,7 +68,8 @@ abstract class RemoteTask extends LocalTask {
       }
 
       if (error != null) {
-        Remote.showError(message: error, confirmText: "Retry", callback: runTask);
+        Remote.showError(
+            message: error, confirmText: "Retry", callback: runTask);
         return false;
       } else {
         onDone();

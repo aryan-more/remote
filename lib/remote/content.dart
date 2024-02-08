@@ -19,7 +19,7 @@ abstract class RemoteContent extends GetxController {
     }
   }
 
-  Future<void> loadData({bool retry = true}) async {
+  Future<bool> loadData({bool retry = true}) async {
     startLoading(retry: retry);
     try {
       await load();
@@ -28,7 +28,7 @@ abstract class RemoteContent extends GetxController {
     } on ExpiredToken catch (_) {
       if (!retry) {
         await Remote.logOut();
-        return;
+        return false;
       }
       try {
         error = await Remote.renewToken();
@@ -51,6 +51,7 @@ abstract class RemoteContent extends GetxController {
       }
     }
     endLoading();
+    return error == null;
   }
 
   void onStartLoading() {}
@@ -61,7 +62,8 @@ abstract class RemoteContent extends GetxController {
       loading = true;
       error = null;
       if (updateController) {
-        Future.delayed(const Duration(milliseconds: 100)).then((value) => update());
+        Future.delayed(const Duration(milliseconds: 100))
+            .then((value) => update());
       }
       afterLoadStart();
     }

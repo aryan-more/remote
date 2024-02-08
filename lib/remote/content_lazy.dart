@@ -47,15 +47,16 @@ abstract class RemoteContentLazy<T> extends RemoteContent {
     super.endLoading();
   }
 
-  Future<void> lazyLoad() async {
+  Future<bool> lazyLoad() async {
     if (!loading || init) {
       oldLength = data.length;
-      await super.loadData();
+      return await super.loadData();
     }
+    return false;
   }
 
   T operator [](int index) => data[index];
 
   @override
-  Future<void> loadData({bool retry = true}) async => lazyLoad();
+  Future<bool> loadData({bool retry = true}) async => lazyLoad();
 }
