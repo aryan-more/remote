@@ -7,14 +7,15 @@ mixin DateRange {
   final Rxn<DateTime> end = Rxn();
 
   DateTime get startFirstDate => DateTime(2023, 4, 1);
-  DateTime get startLastDate => end.value ?? DateTime.now().add(const Duration(days: 365 * 10));
+  DateTime get startLastDate =>
+      end.value ?? DateTime.now().add(const Duration(days: 365 * 10));
 
   DateTime get endFirstDate => start.value ?? DateTime(2023, 4, 1);
-  DateTime get endLastDate => DateTime.now().add(const Duration(days: 365 * 10));
+  DateTime get endLastDate =>
+      DateTime.now().add(const Duration(days: 365 * 10));
 
   void pickStartDate() async {
-    DateTime? date = await showDatePicker(
-      context: Get.context!,
+    DateTime? date = await selectDate(
       initialDate: start.value ?? DateTime.now(),
       firstDate: startFirstDate,
       lastDate: startLastDate,
@@ -26,8 +27,7 @@ mixin DateRange {
   }
 
   void pickEndDate() async {
-    DateTime? date = await showDatePicker(
-      context: Get.context!,
+    DateTime? date = await selectDate(
       initialDate: end.value ?? DateTime.now(),
       firstDate: endFirstDate,
       lastDate: endLastDate,
@@ -36,6 +36,19 @@ mixin DateRange {
       end.value = date;
       onDateUpdate();
     }
+  }
+
+  Future<DateTime?> selectDate({
+    required DateTime firstDate,
+    required DateTime lastDate,
+    DateTime? initialDate,
+  }) async {
+    return await showDatePicker(
+      context: Get.context!,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      initialDate: initialDate,
+    );
   }
 
   void onDateUpdate() {
