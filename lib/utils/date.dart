@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:remote/remote.dart';
 
+class NoDateRangeUpdate {}
+
 mixin DateRange {
   final Rxn<DateTime> start = Rxn();
   final Rxn<DateTime> end = Rxn();
@@ -52,6 +54,10 @@ mixin DateRange {
   }
 
   void onDateUpdate() {
+    if (this is NoDateRangeUpdate) {
+      return;
+    }
+
     if (this is RemoteContentBaseSearch) {
       return;
     }
@@ -61,7 +67,7 @@ mixin DateRange {
     }
 
     if (this is RemoteContent) {
-      (this as RemoteContentLazy).loadData();
+      (this as RemoteContent).loadData();
       return;
     }
   }
