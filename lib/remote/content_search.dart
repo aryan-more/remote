@@ -43,7 +43,7 @@ abstract class RemoteContentBaseSearch<T extends Searchable> extends RemoteConte
     }
   }
 
-  void onSelect(T? selected);
+  void onSelect(T? selected, {bool updateListeners = true});
 
   String? validator(String? text) {
     return null;
@@ -68,7 +68,7 @@ abstract class RemoteContentSearch<T extends Searchable> extends RemoteContentBa
   }
 
   @override
-  void onSelect(T? selected) {
+  void onSelect(T? selected, {bool updateListeners = true}) {
     if (this.selected == selected) {
       return;
     }
@@ -79,7 +79,10 @@ abstract class RemoteContentSearch<T extends Searchable> extends RemoteContentBa
     } else {
       textEditingController.text = selected?.toSearchLabel() ?? "";
     }
-    onSelected();
+
+    if (updateListeners) {
+      onSelected();
+    }
   }
 }
 
@@ -103,7 +106,7 @@ abstract class RemoteContentSearchRx<T extends Searchable> extends RemoteContent
   }
 
   @override
-  void onSelect(T? selected) {
+  void onSelect(T? selected, {bool updateListeners = true}) {
     if (this.selected.value == selected) {
       return;
     }
@@ -114,6 +117,9 @@ abstract class RemoteContentSearchRx<T extends Searchable> extends RemoteContent
     } else {
       textEditingController.text = selected?.toSearchLabel() ?? "";
     }
-    onSelected();
+
+    if (updateListeners) {
+      onSelected();
+    }
   }
 }
