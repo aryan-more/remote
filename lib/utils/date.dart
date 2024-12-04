@@ -18,7 +18,7 @@ mixin DateRange {
 
   void pickStartDate() async {
     DateTime? date = await selectDate(
-      initialDate: start.value ?? DateTime.now(),
+      initialDate: start.value ,
       firstDate: startFirstDate,
       lastDate: startLastDate,
     );
@@ -30,7 +30,7 @@ mixin DateRange {
 
   void pickEndDate() async {
     DateTime? date = await selectDate(
-      initialDate: end.value ?? DateTime.now(),
+      initialDate: end.value ,
       firstDate: endFirstDate,
       lastDate: endLastDate,
     );
